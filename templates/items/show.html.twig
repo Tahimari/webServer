@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Shop{% endblock %}
+
+{% block body %}
+    {% if item %}
+        <hr>
+            <p>{{ item.title }}</p>
+        <hr>
+        <div class="row">
+            <img src="{{item.image_url}}" width="500">
+            <p>{{ item.title }}</p>
+            <p>{{ item.description }}</p>
+            <p>{{ item.price }}</p>
+        </div>
+
+    {% else %}
+        <p>No item to display, go back to home page</p>
+    {% endif %}
+{% endblock %}
