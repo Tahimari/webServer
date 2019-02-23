@@ -8,12 +8,14 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class ItemController extends Controller{
+class ItemController extends Controller
+{
     /**
      * @Route("/", name="item_list")
      * @Method({"GET"});
      */
-    public function index() {
+    public function index()
+    {
 
         $items = $this->getDoctrine()->getRepository(Item::class)
             ->findAll();
@@ -26,10 +28,11 @@ class ItemController extends Controller{
     /**
      * @Route("/items/{id}", name="item_show")
      */
-    public function showItem($id) {
+    public function showItem()
+    {
 
         $item = $this->getDoctrine()->getRepository(Item::class)
-            ->find($id);
+            ->find(1);
 
         return $this->render('items/show.html.twig', array(
             'item' => $item
