@@ -1,11 +1,11 @@
 # webShop
 Projekt na przedmiot programowanie zespołowe. Przedstawiający implementacje sklepu internetowego. 
 
-Wykonany za pomocą framworku Symfony 4.2.3. Przy użyciu biblioteki doctrine.
+Wykonany z pomocą framworku Symfony 4.2.3. Przy użyciu biblioteki doctrine.
 
 Autorzy projektu
 Kamil Misiak - backend, 
-Sebastian Kania,
+Sebastian Kania - testy,
 Grzegorz Galios - frontend.
 
 
