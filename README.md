@@ -1,5 +1,5 @@
 # webShop
-Projekt na przedmiot programowanie zespołowe. Przedstawiający projekt sklepu internetowego. 
+Projekt na przedmiot programowanie zespołowe. Przedstawiający implementacje sklepu internetowego. 
 
 Wykonany za pomocą framworku Symfony 4.2.3. Przy użyciu biblioteki doctrine.
 
