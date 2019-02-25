@@ -28,11 +28,10 @@ class ItemController extends Controller
     /**
      * @Route("/items/{id}", name="item_show")
      */
-    public function showItem()
+    public function showItem($id)
     {
-
         $item = $this->getDoctrine()->getRepository(Item::class)
-            ->find(1);
+            ->find($id);
 
         return $this->render('items/show.html.twig', array(
             'item' => $item
