@@ -36,6 +36,11 @@ class Item
      */
     private $image_url;
 
+    /**
+     * @ORM\Column(type="string", length=20, nullable=true)
+     */
+    private $category;
+
     public function getId()
     {
         return $this->id;
@@ -54,6 +59,11 @@ class Item
     public function getPrice()
     {
         return $this->price;
+    }
+
+    public function getImageUrl()
+    {
+        return $this->image_url;
     }
 
     public function getImage_url()
@@ -84,5 +94,17 @@ class Item
     public function setImage_url($url)
     {
         $this->url = $url;
+    }
+
+    public function getCategory(): ?string
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?string $category): self
+    {
+        $this->category = $category;
+
+        return $this;
     }
 }

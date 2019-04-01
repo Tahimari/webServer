@@ -5,7 +5,11 @@
 {% block body %}
     {% if items %}
             <hr>
-                <p>Shoes</p>
+                {% if category %}
+                    <p>{{ category }}</p>
+                {% else %}
+                    <p>ITEMS</p>
+                {% endif %}
             <hr>
             <div class="row">
             {% for item in items %}

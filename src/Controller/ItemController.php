@@ -1,5 +1,6 @@
 <?php
-namespace  App\Controller;
+
+namespace App\Controller;
 
 use App\Entity\Item;
 use Symfony\Bundle\FrameworkBundle\Tests\Fixtures\Validation\Article;
@@ -7,21 +8,39 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use App\Form\ProductFormType;
 
 class ItemController extends Controller
 {
+
     /**
      * @Route("/", name="item_list")
      * @Method({"GET"});
      */
     public function index()
     {
-
         $items = $this->getDoctrine()->getRepository(Item::class)
             ->findAll();
 
         return $this->render('items/index.html.twig', array(
-            'items' => $items
+                'items'    => $items,
+                'category' => null
+        ));
+    }
+
+    /**
+     * @Route("/category/{category}", name="item_category_list")
+     * @Method({"GET"});
+     */
+    public function category($category)
+    {
+
+        $items = $this->getDoctrine()->getRepository(Item::class)
+            ->findByCategory($category);
+
+        return $this->render('items/index.html.twig', array(
+                'items'    => $items,
+                'category' => $category
         ));
     }
 
@@ -34,7 +53,7 @@ class ItemController extends Controller
             ->find($id);
 
         return $this->render('items/show.html.twig', array(
-            'item' => $item
+                'item' => $item
         ));
     }
 }

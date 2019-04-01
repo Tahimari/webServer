@@ -8,12 +8,16 @@
             <p>{{ item.title }}</p>
         <hr>
         <div class="row">
-            <img src="{{item.image_url}}" width="500">
-            <p>{{ item.title }}</p>
-            <p>{{ item.description }}</p>
-            <p>{{ item.price }}</p>
+            <div class="col-md">
+                <img src="{{item.image_url}}" width="500">
+            </div>
+            <div class="col-md">
+                <p>{{ item.title }}</p>
+                <p>{{ item.description }}</p>
+                <p>{{ item.price }} zł</p>
+                <button class="btn btn-lg btn-primary btn-block">Kup</button>
+            </div>
         </div>
-
     {% else %}
         <p>No item to display, go back to home page</p>
     {% endif %}
