@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-sm navbar-dark bg-primary mb-3">
     <div class="container">
-        <a href="/" class="navbar-brand">WebShop</a>
+        <a href="{{ path('item_list') }}" class="navbar-brand">WebShop</a>
         <button class="navbar-toggler" type="button"
                 data-toggle="collapse" data-targer="#mobile-nav">
             <span class="navbar-toggler-icon"></span>
@@ -9,7 +9,7 @@
         <div class="collapse navbar-collapse" id="mobile-nav">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a href="/" class="nav-link">Home</a>
+                    <a href="{{ path('item_list') }}" class="nav-link">Home</a>
                 </li>
                 <li class="nav-item">
                     <div class="dropdown">
@@ -24,7 +24,7 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a href="/contact" class="nav-link">Contact us</a>
+                    <a href="{{ path('app_contact') }}" class="nav-link">Contact us</a>
                 </li>
                 <li class="nav-item">
 
@@ -33,21 +33,21 @@
                     <a href="{{ path('admin_item_list') }}" class="nav-link">Panel</a>
                 </li>
                 <li class="nav-item">
-                    <a href="/account/" class="nav-link">My Account</a>
+                    <a href="{{ path('app_account') }}" class="nav-link">My Account</a>
                 </li>
                 <li class="nav-item">
-                    <a href="/logout" class="nav-link">Log out</a>
+                    <a href="{{ path('app_logout') }}" class="nav-link">Log out</a>
                 </li>
                 {% elseif app.user %}
                     <li class="nav-item">
-                        <a href="/account/" class="nav-link">My Account</a>
+                        <a href="{{ path('app_account') }}" class="nav-link">My Account</a>
                     </li>
                 <li class="nav-item">
-                    <a href="/logout" class="nav-link">Log out</a>
+                    <a href="{{ path('app_logout') }}" class="nav-link">Log out</a>
                 </li>
                 {% else %}
                 <li class="nav-item">
-                    <a href="/login" class="nav-link">Log in</a>
+                    <a href="{{ path('app_login') }}" class="nav-link">Log in</a>
                 </li>
                 {% endif %}
             </ul>

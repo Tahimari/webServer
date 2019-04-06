@@ -13,20 +13,9 @@ use App\Entity\Item;
 
 class AdministratorPanelController extends AbstractController
 {
-
     /**
-     * @Route("/admin/list", name="administrator_panel")
-     */
-    public function index()
-    {
-        return $this->render('administrator_panel/index.html.twig', [
-                'controller_name' => 'AdministratorPanelController',
-        ]);
-    }
-
-    /**
-     * @Route("/admin/items/new", name="item_new")
-     * @IsGranted("ROLE_ADMIN_ARTICLE")
+     * @Route("/admin/items/new", name="admin_item_new")
+     * @IsGranted("ROLE_ADMIN")
      */
     public function newItem(EntityManagerInterface $em, Request $request)
     {
@@ -34,9 +23,9 @@ class AdministratorPanelController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $product = $form->getData();
+            $item = $form->getData();
 
-            $em->persist($article);
+            $em->persist($item);
             $em->flush();
 
             $this > addFlash('success', 'Product added!');
@@ -50,17 +39,17 @@ class AdministratorPanelController extends AbstractController
     }
 
     /**
-     * @Route("/admin/items/{id}/edit", name="item_edit")
-     * @IsGranted("MANAGE", subject="item")
+     * @Route("/admin/items/{id}/edit", name="admin_item_edit")
+     * @IsGranted("ROLE_ADMIN")
      */
-    public function editItem(Item $product, Request $request, EntityManagerInterface $em)
+    public function editItem(Item $item, Request $request, EntityManagerInterface $em)
     {
-        $form = $this->createForm(ProductFormType::class, $product);
+        $form = $this->createForm(ProductFormType::class, $item);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $product = $form->getData();
+            $item = $form->getData();
 
             $em->persist($product);
             $em->flush();
@@ -68,7 +57,7 @@ class AdministratorPanelController extends AbstractController
             $this->addFlash('success', 'Product Updated!');
 
             return $this->redirectToRoute('item_edit', [
-                    'id' => $product->getId(),
+                    'id' => $item->getId(),
             ]);
         }
 
@@ -79,13 +68,14 @@ class AdministratorPanelController extends AbstractController
 
     /**
      * @Route("/admin/items/list", name="admin_item_list")
+     * @IsGranted("ROLE_ADMIN")
      */
     public function list(ItemRepository $itemRepository)
     {
-        $products = $itemRepository->findAll();
+        $items = $itemRepository->findAll();
 
         return $this->render('administrator_panel/list.html.twig', [
-                'products' => $products,
+                'products' => $items,
         ]);
     }
 }

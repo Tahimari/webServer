@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 class ContactController extends AbstractController
 {
     /**
-     * @Route("/contact", name="contact")
+     * @Route("/contact", name="app_contact")
      */
     public function index(Request $request, \Swift_Mailer $mailer)
     {
