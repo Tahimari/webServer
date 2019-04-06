@@ -13,6 +13,7 @@ use App\Entity\Item;
 
 class AdministratorPanelController extends AbstractController
 {
+
     /**
      * @Route("/admin/items/new", name="admin_item_new")
      * @IsGranted("ROLE_ADMIN")
@@ -28,9 +29,9 @@ class AdministratorPanelController extends AbstractController
             $em->persist($item);
             $em->flush();
 
-            $this > addFlash('success', 'Product added!');
+            $this->addFlash('success', 'Product added!');
 
-            return $this->redirectToRoute('administrator_panel');
+            return $this->redirectToRoute('admin_item_list');
         }
 
         return $this->render('administrator_panel/new.html.twig', [
@@ -51,12 +52,12 @@ class AdministratorPanelController extends AbstractController
 
             $item = $form->getData();
 
-            $em->persist($product);
+            $em->persist($item);
             $em->flush();
 
             $this->addFlash('success', 'Product Updated!');
 
-            return $this->redirectToRoute('item_edit', [
+            return $this->redirectToRoute('admin_item_edit', [
                     'id' => $item->getId(),
             ]);
         }
@@ -64,6 +65,20 @@ class AdministratorPanelController extends AbstractController
         return $this->render('administrator_panel/edit.html.twig', [
                 'productForm' => $form->createView()
         ]);
+    }
+
+    /**
+     * @Route("/admin/items/{id}/delete", name="admin_item_delete")
+     * @IsGranted("ROLE_ADMIN")
+     */
+    public function delete(Item $item, EntityManagerInterface $em)
+    {
+        $em->remove($item);
+        $em->flush();
+
+        $this->addFlash('warning', 'Product Deleted!');
+
+        return $this->redirectToRoute('admin_item_list');
     }
 
     /**
