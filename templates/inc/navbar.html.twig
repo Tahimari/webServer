@@ -1,13 +1,12 @@
-<nav class="navbar navbar-expand-sm navbar-dark bg-primary mb-3">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
     <div class="container">
         <a href="{{ path('item_list') }}" class="navbar-brand">WebShop</a>
-        <button class="navbar-toggler" type="button"
-                data-toggle="collapse" data-targer="#mobile-nav">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse" id="mobile-nav">
-            <ul class="navbar-nav ml-auto">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav">
                 <li class="nav-item">
                     <a href="{{ path('item_list') }}" class="nav-link">Home</a>
                 </li>
@@ -17,9 +16,9 @@
                             Categories
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" href="/category/SHOES">Shoes</a>
-                            <a class="dropdown-item" href="/category/TSHIRT">T-Shirts</a>
-                            <a class="dropdown-item" href="/category/JACKET">Jackets</a>
+                            <a class="dropdown-item" href="{{ path('item_category_list', {category: 'Shoes'}) }}">Shoes</a>
+                            <a class="dropdown-item" href="{{ path('item_category_list', {category: 'TShirt'}) }}">T-Shirts</a>
+                            <a class="dropdown-item" href="{{ path('item_category_list', {category: 'Jacket'}) }}">Jackets</a>
                         </div>
                     </div>
                 </li>
@@ -27,30 +26,41 @@
                     <a href="{{ path('app_contact') }}" class="nav-link">Contact us</a>
                 </li>
                 <li class="nav-item">
-
-                {% if is_granted('ROLE_ADMIN') %}
-                <li class="nav-item">
-                    <a href="{{ path('admin_item_list') }}" class="nav-link">Panel</a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ path('app_account') }}" class="nav-link">My Account</a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ path('app_logout') }}" class="nav-link">Log out</a>
-                </li>
-                {% elseif app.user %}
+                    {% if is_granted('ROLE_ADMIN') %}
+                    <li class="nav-item">
+                        <a href="{{ path('admin_item_list') }}" class="nav-link">Panel</a>
+                    </li>
+                {% endif %}
+                {% if (app.user or is_granted('ROLE_USER')) %}
                     <li class="nav-item">
                         <a href="{{ path('app_account') }}" class="nav-link">My Account</a>
                     </li>
-                <li class="nav-item">
-                    <a href="{{ path('app_logout') }}" class="nav-link">Log out</a>
-                </li>
+                    <li class="nav-item">
+                        <a href="{{ path('app_logout') }}" class="nav-link">Log out</a>
+                    </li>
+                    <div class="dropdown mr-3">
+                        <button class="btn btn-dark bg-primary dropdown-toggle cart" style="border: 0px; margin-top: 2px" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <p class="cart-paragraph d-inline">0</p><i class="fas fa-shopping-cart ml-1 d-inline"></i>
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <div class="item-cart-list">
+                            </div>
+                            <div>
+                                <p id="cart-price">To pay: 0 zł</p>
+                            </div>
+                            <a href="{{ path('buy_item_details') }}"><button class="btn btn-lg btn-primary btn-bloc check-in-button">Go to check-in</button></a>
+                        </div>
+                    </div>
                 {% else %}
-                <li class="nav-item">
-                    <a href="{{ path('app_login') }}" class="nav-link">Log in</a>
-                </li>
+                    <li class="nav-item">
+                        <a href="{{ path('app_login') }}" class="nav-link">Log in</a>
+                    </li>
                 {% endif %}
             </ul>
+            <form class="form-inline mt-2 mt-md-0 ml-auto" action="{{ path('item_search_list') }}" method="GET">
+                <input class="form-control mr-sm-2 js-user-autocomplete" type="text" name="query" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0 ml-2" type="submit">Search</button>
+            </form>
         </div>
     </div>
 </nav>

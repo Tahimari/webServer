@@ -19,6 +19,31 @@ class ItemRepository extends ServiceEntityRepository
         parent::__construct($registry, Item::class);
     }
 
+    /**
+     * @return Item[]
+     */
+    public function findAllTitleAlphabetical()
+    {
+        return $this->createQueryBuilder('u')
+                ->orderBy('u.title', 'ASC')
+                ->getQuery()
+                ->execute();
+    }
+
+    /**
+     * @return User[]
+     */
+    public  function findAllMatching(string $query, int $limit = 5)
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.title LIKE :query')
+            ->setParameter('query', '%'.$query.'%')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
+
+
     // /**
     //  * @return Item[] Returns an array of Item objects
     //  */

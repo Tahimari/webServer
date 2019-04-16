@@ -2,7 +2,10 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ItemRepository")
@@ -13,11 +16,14 @@ class Item
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups("cart")
      */
     private $id;
 
     /**
      * @ORM\Column(type="text")
+     * @Groups("autocomplete")
+     * @Groups("cart")
      */
     private $title;
 
@@ -28,6 +34,7 @@ class Item
 
     /**
      * @ORM\Column(type="float")
+     * @Groups("cart")
      */
     private $price;
 
@@ -38,8 +45,19 @@ class Item
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("cart")
      */
     private $imageUrl;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="items")
+     */
+    private $users;
+
+    public function __construct()
+    {
+        $this->users = new ArrayCollection();
+    }
 
     public function getId()
     {
@@ -101,6 +119,34 @@ class Item
     public function setImageUrl(?string $imageUrl): self
     {
         $this->imageUrl = $imageUrl;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->addItem($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->users->contains($user)) {
+            $this->users->removeElement($user);
+            $user->removeItem($this);
+        }
 
         return $this;
     }
