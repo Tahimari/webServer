@@ -54,9 +54,15 @@ class Item
      */
     private $users;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Delivery", mappedBy="items")
+     */
+    private $deliveries;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
+        $this->deliveries = new ArrayCollection();
     }
 
     public function getId()
@@ -146,6 +152,34 @@ class Item
         if ($this->users->contains($user)) {
             $this->users->removeElement($user);
             $user->removeItem($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Delivery[]
+     */
+    public function getDeliveries(): Collection
+    {
+        return $this->deliveries;
+    }
+
+    public function addDelivery(Delivery $delivery): self
+    {
+        if (!$this->deliveries->contains($delivery)) {
+            $this->deliveries[] = $delivery;
+            $delivery->addItem($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDelivery(Delivery $delivery): self
+    {
+        if ($this->deliveries->contains($delivery)) {
+            $this->deliveries->removeElement($delivery);
+            $delivery->removeItem($this);
         }
 
         return $this;

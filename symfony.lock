@@ -77,6 +77,9 @@
     "doctrine/reflection": {
         "version": "v1.0.0"
     },
+    "dompdf/dompdf": {
+        "version": "v0.8.3"
+    },
     "easycorp/easy-log-handler": {
         "version": "1.0",
         "recipe": {
@@ -88,6 +91,12 @@
     },
     "egulias/email-validator": {
         "version": "2.1.7"
+    },
+    "endroid/asset": {
+        "version": "2.0.7"
+    },
+    "endroid/installer": {
+        "version": "1.1.5"
     },
     "facebook/webdriver": {
         "version": "1.6.0"
@@ -173,6 +182,12 @@
     "ocramius/proxy-manager": {
         "version": "2.1.1"
     },
+    "phenx/php-font-lib": {
+        "version": "0.5.1"
+    },
+    "phenx/php-svg-lib": {
+        "version": "v0.3.2"
+    },
     "phpdocumentor/reflection-common": {
         "version": "1.0.1"
     },
@@ -196,6 +211,9 @@
     },
     "psr/simple-cache": {
         "version": "1.0.1"
+    },
+    "sabberworm/php-css-parser": {
+        "version": "8.1.0"
     },
     "sensio/framework-extra-bundle": {
         "version": "5.2",
@@ -490,6 +508,15 @@
     },
     "symfony/yaml": {
         "version": "v4.2.3"
+    },
+    "twig/extensions": {
+        "version": "1.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "1.0",
+            "ref": "ddb2e0a77773b7fd75d8d649545f174e664500ab"
+        }
     },
     "twig/twig": {
         "version": "v2.6.2"

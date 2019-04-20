@@ -53,9 +53,15 @@ class User implements UserInterface
      */
     private $items;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Delivery", mappedBy="user")
+     */
+    private $deliveries;
+
     public function __construct()
     {
         $this->items = new ArrayCollection();
+        $this->deliveries = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -181,6 +187,37 @@ class User implements UserInterface
     {
         if ($this->items->contains($item)) {
             $this->items->removeElement($item);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Delivery[]
+     */
+    public function getDeliveries(): Collection
+    {
+        return $this->deliveries;
+    }
+
+    public function addDelivery(Delivery $delivery): self
+    {
+        if (!$this->deliveries->contains($delivery)) {
+            $this->deliveries[] = $delivery;
+            $delivery->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDelivery(Delivery $delivery): self
+    {
+        if ($this->deliveries->contains($delivery)) {
+            $this->deliveries->removeElement($delivery);
+            // set the owning side to null (unless already changed)
+            if ($delivery->getUser() === $this) {
+                $delivery->setUser(null);
+            }
         }
 
         return $this;
