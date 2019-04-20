@@ -44,7 +44,7 @@ class BuyItemController extends AbstractController
             foreach ($items as $item) {
                 $delivery->addItem($item);
             }
-
+            $delivery->addItem($form->get('item')->getData());
             $em->persist($delivery);
             $em->flush();
             return $this->redirectToRoute('buy_success', [

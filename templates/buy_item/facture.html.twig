@@ -17,23 +17,15 @@
                     <th scope="row">{{ item.id }}</th>
                     <td>{{ item.title }}</td>
                     <td>{{ item.category }}</td>
-                    <td>{{ item.price*0.77|round(2, 'floor') }} PLN</td>
-                    <td>{{ item.price*0.23|round(2, 'floor') }} PLN</td>
+                    <td>{{ (item.price*0.77)|number_format(2, '.', ',')}} PLN</td>
+                    <td>{{ (item.price*0.23)|number_format(2, '.', ',') }} PLN</td>
                     <td>{{ item.price }} PLN</td>
                 </tr>
             {% endfor %}
-            <tr>
-                <th scope="row">#</th>
-                <td>Type of delivery</td>
-                <td>Delivery</td>
-                <td>price PLN</td>
-                <td>vat PLN</td>
-                <td>total price PLN</td>
-            </tr>
         </tbody>
     </table>
-    <p>Price: {{ sum*0.77|round(2, 'floor') }} PLN</p>
-    <p>Vat: {{ sum*0.23|round(2, 'floor') }} PLN</p>
+    <p>Price: {{ (sum*0.77)|number_format(2, '.', ',') }} PLN</p>
+    <p>Vat: {{ (sum*0.23)|number_format(2, '.', ',') }} PLN</p>
     <p>Total: {{ sum }} PLN</p>
     <div class="selling">
         <p><b>Selling:</b></p>

@@ -59,6 +59,11 @@ class Item
      */
     private $deliveries;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isVisible;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
@@ -181,6 +186,18 @@ class Item
             $this->deliveries->removeElement($delivery);
             $delivery->removeItem($this);
         }
+
+        return $this;
+    }
+
+    public function getIsVisible(): ?bool
+    {
+        return $this->isVisible;
+    }
+
+    public function setIsVisible(bool $isVisible): self
+    {
+        $this->isVisible = $isVisible;
 
         return $this;
     }

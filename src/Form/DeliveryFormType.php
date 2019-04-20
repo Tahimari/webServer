@@ -6,8 +6,10 @@ use App\Entity\Delivery;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
+use App\Entity\Item;
+use App\Repository\ItemRepository;
 
 class DeliveryFormType extends AbstractType
 {
@@ -15,14 +17,17 @@ class DeliveryFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('typeOfDelivery', ChoiceType::class, [
-                'placeholder' => 'Choose type of delivery',
-                'choices'     => [
-                    'Courier DPD 17.99zł'   => 'dpd',
-                    'Courier DHL 19.99zł'   => 'dhl',
-                    'Poczta Polska 14.99zł' => 'pp'
-                ],
-                'required'    => true,
+            ->add('item', EntityType::class, [
+                'class'         => Item::class,
+                'mapped'        => false,
+                'query_builder' => function (ItemRepository $ir) {
+                    return $ir->createQueryBuilder('u')
+                        ->andWhere('u.category=:deli')
+                        ->setParameter('deli', 'DELIVERY');
+                },
+                'choice_label' => function($delivery) {
+                    return $delivery->getTitle() . ' ' . $delivery->getPrice() . 'zł';
+                },
             ])
             ->add('firstName')
             ->add('lastName')

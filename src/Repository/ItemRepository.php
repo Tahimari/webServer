@@ -14,6 +14,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class ItemRepository extends ServiceEntityRepository
 {
+
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Item::class);
@@ -30,46 +31,54 @@ class ItemRepository extends ServiceEntityRepository
                 ->execute();
     }
 
+    public function findAllVisible()
+    {
+        return $this->createQueryBuilder('u')
+                ->andWhere('u.isVisible=1')
+                ->orderBy('u.title', 'ASC')
+                ->getQuery()
+                ->execute();
+    }
+
     /**
      * @return User[]
      */
-    public  function findAllMatching(string $query, int $limit = 5)
+    public function findAllMatching(string $query, int $limit = 5)
     {
         return $this->createQueryBuilder('u')
-            ->andWhere('u.title LIKE :query')
-            ->setParameter('query', '%'.$query.'%')
-            ->setMaxResults($limit)
-            ->getQuery()
-            ->getResult();
+                ->andWhere('u.isVisible=1')
+                ->andWhere('u.title LIKE :query')
+                ->setParameter('query', '%' . $query . '%')
+                ->setMaxResults($limit)
+                ->getQuery()
+                ->getResult();
     }
-
-
     // /**
     //  * @return Item[] Returns an array of Item objects
     //  */
     /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('i')
-            ->andWhere('i.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('i.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+      public function findByExampleField($value)
+      {
+      return $this->createQueryBuilder('i')
+      ->andWhere('i.exampleField = :val')
+      ->setParameter('val', $value)
+      ->orderBy('i.id', 'ASC')
+      ->setMaxResults(10)
+      ->getQuery()
+      ->getResult()
+      ;
+      }
+     */
 
     /*
-    public function findOneBySomeField($value): ?Item
-    {
-        return $this->createQueryBuilder('i')
-            ->andWhere('i.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
+      public function findOneBySomeField($value): ?Item
+      {
+      return $this->createQueryBuilder('i')
+      ->andWhere('i.exampleField = :val')
+      ->setParameter('val', $value)
+      ->getQuery()
+      ->getOneOrNullResult()
+      ;
+      }
+     */
 }

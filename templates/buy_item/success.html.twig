@@ -19,7 +19,7 @@
                     <th scope="row">1</th>
                     <td>{{ item.title }}</td>
                     <td>{{ item.category }}</td>
-                    <td>{{ item.price }}</td>
+                    <td>{{ item.price|number_format(2, '.', ',') }} zł</td>
                 </tr>
             {% endfor %}
         </tbody>

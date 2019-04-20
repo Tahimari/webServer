@@ -12,10 +12,11 @@ use Symfony\Component\Validator\Constraints\DateTime;
  */
 class Delivery
 {
+
     public function __construct()
     {
         $this->createdAt = new \DateTime();
-        $this->items = new ArrayCollection();
+        $this->items     = new ArrayCollection();
     }
     /**
      * @ORM\Id()
@@ -74,11 +75,6 @@ class Delivery
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
-
-    /**
-     * @ORM\Column(type="float")
-     */
-    private $price;
 
     public function getId(): ?int
     {
@@ -215,18 +211,6 @@ class Delivery
     public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    public function getPrice(): ?float
-    {
-        return $this->price;
-    }
-
-    public function setPrice(float $price): self
-    {
-        $this->price = $price;
 
         return $this;
     }

@@ -20,21 +20,19 @@
     <a><button class="btn btn-primary">Save</button></a>
 
     <h4 class="mt-3">Buying history: </h4>  
-    <table class="table">
+    <table class="table" style="max-width: 500px">
         <thead>
             <tr>
                 <th>Id</th>
-                <th>Delivery type</th>
                 <th>Date</th>
                 <th>Price</th>
-                <th>&nbsp;</th>
+                <th>Invoke</th>
             </tr>
         </thead>
         <tbody>
             {% for delivery in user.deliveries %}
                 <tr>
                     <td>{{ delivery.id }}</td>
-                    <td>{{ delivery.typeOfDelivery }}</td>
                     <td>{{ delivery.createdAt|date('m/d/Y') }}</td>
                     {% set sum = 0 %}    
                     {% set loopOutput %}               
@@ -42,7 +40,7 @@
                             {% set sum = sum + item.price %}        
                         {% endfor %}    
                     {% endset %}
-                    <td>{{ sum }}zł</td>
+                    <td>{{ sum|number_format(2, '.', ',') }}zł</td>
                     <td>
                         <a target="_blank" href="{{ path('generate_pdf', {
                             id: delivery.id

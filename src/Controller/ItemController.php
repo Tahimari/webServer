@@ -25,7 +25,7 @@ class ItemController extends Controller
     public function index()
     {
         $items = $this->getDoctrine()->getRepository(Item::class)
-            ->findAll();
+            ->findAllVisible();
 
         return $this->render('items/index.html.twig', array(
                 'items'    => $items,
@@ -117,7 +117,6 @@ class ItemController extends Controller
     public function getItemsApi(ItemRepository $itemRepository, Request $request)
     {
         $items = $itemRepository->findAllMatching($request->query->get('query'));
-        //dd($items);
         return $this->json($items, 200, [], [
             'groups' => ['autocomplete'],
         ]);
