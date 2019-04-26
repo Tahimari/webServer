@@ -19,7 +19,7 @@ class BuyItemController extends AbstractController
      * @Route("/buy/details", name="buy_item_details")
      * @IsGranted("ROLE_USER")
      */
-    public function addToCart()
+    public function cart()
     {
         $user = $this->getUser();
         return $this->render('buy_item/index.html.twig', [

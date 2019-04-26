@@ -4,28 +4,11 @@
 
 $(document).ready(function () {
     $('.cart').on('click', function (e) {
-        //e.preventDefault();
-
-        //var link = $(e.currentTarget);
-
         $.ajax({
             method: 'GET',
             url: '/account/get-cart'
         }).done(function (data) {
-           generateCart(data);
-        });
-        
-        $('.delete-button').on('click', function (e) {
-            e.preventDefault();
-
-            var link = $(e.currentTarget);
-
-            $.ajax({
-                method: 'GET',
-                url: link.attr('href')
-            }).done(function (data) {
-                generateCart(data);
-            });
+            generateCart(data);
         });
     });
 });
@@ -55,12 +38,6 @@ function generateCart(data) {
         var paragraph2 = document.createElement("p");
         paragraph2.setAttribute("id", "item-price");
 
-        var button = document.createElement("button");
-        button.classList.add("delete-button");
-        button.setAttribute("href", "/items/" + data[i].id + "/delete-from-cart");
-        
-        var buttonNode = document.createTextNode("X");
-        button.appendChild(buttonNode);
 
         var node1 = document.createTextNode(data[i].title);
         var node2 = document.createTextNode(data[i].price + "zł");
@@ -71,10 +48,9 @@ function generateCart(data) {
         paragraphDiv.appendChild(paragraph1);
         paragraphDiv.appendChild(paragraph2);
 
-        div.appendChild(button);
         div.appendChild(img);
         div.appendChild(paragraphDiv);
-        
+
         list.appendChild(div);
         cartListUL.appendChild(list);
     }

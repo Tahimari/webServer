@@ -63,14 +63,18 @@ class ItemController extends Controller
      * @Route("/search", name="item_search_list")
      * @Method({"GET"});
      */
-    public function search(Request $request)
+    public function search(Request $request, ItemRepository $repository, PaginatorInterface $paginator)
     {
         $query = $request->query->get('query');
-        $items = $this->getDoctrine()->getRepository(Item::class)
-            ->findAllMatching($query);
+        $queryBuilder = $repository->findAllMatching($query);
+        $pagination   = $paginator->paginate(
+            $queryBuilder,
+            $request->query->getInt('page', 1),
+            12
+        );
 
         return $this->render('items/index.html.twig', array(
-                'items'    => $items,
+                'items'    => $pagination,
                 'category' => $query
         ));
     }
@@ -106,7 +110,7 @@ class ItemController extends Controller
     }
 
     /**
-     * @Route("items/{id}/delete-from-cart", name="item_delete_from_cart", methods={"POST"})
+     * @Route("items/{id}/delete-from-cart", name="item_delete_from_cart")
      * @IsGranted("ROLE_USER")
      */
     public function deleteFromCart(Item $item, EntityManagerInterface $em)
@@ -116,9 +120,7 @@ class ItemController extends Controller
         $em->persist($item);
         $em->flush();
 
-        return $this->json($user->getItems(), 200, [], [
-                'groups' => ['autocomplete'],
-        ]);
+        return $this->redirectToRoute('buy_item_details');
     }
 
     /**
