@@ -11,6 +11,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Form\ProductFormType;
 use App\Repository\ItemRepository;
 use App\Entity\Item;
+use Gedmo\Sluggable\Util\Urlizer;
 
 class AdministratorPanelController extends AbstractController
 {
@@ -25,7 +26,25 @@ class AdministratorPanelController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var UploadedFile $uploadedFile */
+            $uploadedFile = $form['file']->getData();
+
             $item = $form->getData();
+
+            if ($uploadedFile) {
+                $destination = $this->getParameter('kernel.project_dir') . '/public/images/shop/';
+
+                $originalFilename = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $newFilename      = Urlizer::urlize($originalFilename) . '-' . uniqid() . '.' . $uploadedFile->guessExtension();
+
+                $uploadedFile->move(
+                    $destination,
+                    $newFilename
+                );
+
+
+                $item->setImageUrl('/images/shop/' . $newFilename);
+            }
 
             $em->persist($item);
             $em->flush();
@@ -50,8 +69,25 @@ class AdministratorPanelController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var UploadedFile $uploadedFile */
+            $uploadedFile = $form['file']->getData();
 
             $item = $form->getData();
+
+            if ($uploadedFile) {
+                $destination = $this->getParameter('kernel.project_dir') . '/public/images/shop/';
+
+                $originalFilename = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $newFilename      = Urlizer::urlize($originalFilename) . '-' . uniqid() . '.' . $uploadedFile->guessExtension();
+
+                $uploadedFile->move(
+                    $destination,
+                    $newFilename
+                );
+
+
+                $item->setImageUrl('/images/shop/' . $newFilename);
+            }
 
             $em->persist($item);
             $em->flush();
@@ -88,15 +124,15 @@ class AdministratorPanelController extends AbstractController
      */
     public function list(Request $request, ItemRepository $repository, PaginatorInterface $paginator)
     {
-        $q = $request->query->get('q');
+        $q            = $request->query->get('q');
         $queryBuilder = $repository->findAll();
-        $pagination = $paginator->paginate(
+        $pagination   = $paginator->paginate(
             $queryBuilder,
             $request->query->getInt('page', 1),
             10
         );
         return $this->render('administrator_panel/list.html.twig', [
-            'products' => $pagination,
+                'products' => $pagination,
         ]);
     }
 }

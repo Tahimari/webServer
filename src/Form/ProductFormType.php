@@ -8,6 +8,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class ProductFormType extends AbstractType
 {
@@ -20,7 +21,10 @@ class ProductFormType extends AbstractType
             ->add('price', MoneyType::class, [
                 'currency' => 'PLN'
             ])
-            ->add('image_url')
+            ->add('file', FileType::class, [
+                'mapped' => false,
+                'required' => false,
+            ])
             ->add('category', ChoiceType::class, [
                 'choices' => [
                     'SHOES'    => 'SHOES',

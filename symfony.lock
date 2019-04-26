@@ -1,4 +1,7 @@
 {
+    "behat/transliterator": {
+        "version": "v1.2.0"
+    },
     "doctrine/annotations": {
         "version": "1.0",
         "recipe": {
@@ -115,6 +118,9 @@
             "version": "2.2",
             "ref": "258300d52be6ad59b32a888d5ddafbf9638540ff"
         }
+    },
+    "gedmo/doctrine-extensions": {
+        "version": "v2.4.37"
     },
     "hoa/compiler": {
         "version": "3.17.08.08"
