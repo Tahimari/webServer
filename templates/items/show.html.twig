@@ -2,6 +2,11 @@
 
 {% block title %}Shop{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/modal.css') }}">
+{% endblock %}
+
 {% block body %}
     {% if item %}
         <hr>
@@ -29,7 +34,7 @@
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body">
-                        
+
                         <img src="{{item.imageUrl}}" width="200">
                         <p>{{ item.title }}</p>
                         <p>{{ item.price }} zł</p>
