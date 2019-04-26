@@ -1,0 +1,19 @@
+#myModal {
+    margin-top: 100px;
+    padding-bottom: 150px;
+}
+
+.modal-header, h4, close {
+    background-color: 	#2D3E50;
+    color:white !important;
+    text-align: center;
+    font-size: 30px;
+}
+
+.btn-close {
+    margin-right:auto !important;
+}
+
+.modal-footer {
+    background-color: #f9f9f9;
+}

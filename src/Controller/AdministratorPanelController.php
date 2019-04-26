@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Form\ProductFormType;
@@ -85,12 +86,17 @@ class AdministratorPanelController extends AbstractController
      * @Route("/admin/items/list", name="admin_item_list")
      * @IsGranted("ROLE_ADMIN")
      */
-    public function list(ItemRepository $itemRepository)
+    public function list(Request $request, ItemRepository $repository, PaginatorInterface $paginator)
     {
-        $items = $itemRepository->findAll();
-
+        $q = $request->query->get('q');
+        $queryBuilder = $repository->findAll();
+        $pagination = $paginator->paginate(
+            $queryBuilder,
+            $request->query->getInt('page', 1),
+            10
+        );
         return $this->render('administrator_panel/list.html.twig', [
-                'products' => $items,
+            'products' => $pagination,
         ]);
     }
 }

@@ -173,6 +173,12 @@
             "ref": "384cec52df45f3bfd46a09930d6960a58872b268"
         }
     },
+    "knplabs/knp-components": {
+        "version": "v1.3.10"
+    },
+    "knplabs/knp-paginator-bundle": {
+        "version": "v3.0.0"
+    },
     "monolog/monolog": {
         "version": "1.24.0"
     },

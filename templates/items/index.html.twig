@@ -4,27 +4,33 @@
 
 {% block body %}
     {% if items %}
-            <hr>
-                {% if category %}
-                    <p>{{ category }}</p>
-                {% else %}
-                    <p>ITEMS</p>
-                {% endif %}
-            <hr>
-            <div class="row">
+        <hr>
+        {% if category %}
+            <p>{{ category }}</p>
+        {% else %}
+            <p>ITEMS</p>
+        {% endif %}
+        <hr>
+        <div class="row">
             {% for item in items %}
-                    <div class="col">
-                        <a href="{{ path('item_show', {id: item.id}) }}">
-                            <img src="{{ item.imageUrl }}" width="280">
-                            <p>{{ item.title }}</p>
-                        </a>
-                        <p>{{ item.price }} zł</p>
-                    </div>
+                <div class="col">
+                    <a href="{{ path('item_show', {id: item.id}) }}">
+                        <img src="{{ item.imageUrl }}" width="280">
+                        <p>{{ item.title }}</p>
+                    </a>
+                    <p>{{ item.price }} zł</p>
+                </div>
             {% endfor %}
-            {% else %}
-                <p>No items to display</p>
-    {% endif %}
-             </div>
+        {% else %}
+            <p>No items to display</p>
+        {% endif %}
+
+    </div>
+
+{% endblock %}
+
+{% block footer %}
+    {{ knp_pagination_render(items) }}
 {% endblock %}
 
 {% block javascripts %}

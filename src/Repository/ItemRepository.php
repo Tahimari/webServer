@@ -35,7 +35,6 @@ class ItemRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('u')
                 ->andWhere('u.isVisible=1')
-                ->orderBy('u.title', 'ASC')
                 ->getQuery()
                 ->execute();
     }

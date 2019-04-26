@@ -43,3 +43,7 @@
         </tbody>
     </table>
 {% endblock %}
+
+{% block footer %}
+    {{ knp_pagination_render(products) }}
+{% endblock %}

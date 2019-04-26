@@ -14,6 +14,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use App\Repository\ItemRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Knp\Component\Pager\PaginatorInterface;
 
 class ItemController extends Controller
 {
@@ -22,13 +23,18 @@ class ItemController extends Controller
      * @Route("/", name="item_list")
      * @Method({"GET"});
      */
-    public function index()
+    public function index(PaginatorInterface $paginator, Request $request, ItemRepository $repository)
     {
-        $items = $this->getDoctrine()->getRepository(Item::class)
-            ->findAllVisible();
+        $q            = $request->query->get('q');
+        $queryBuilder = $repository->findAllVisible();
+        $pagination   = $paginator->paginate(
+            $queryBuilder,
+            $request->query->getInt('page', 1),
+            12
+        );
 
         return $this->render('items/index.html.twig', array(
-                'items'    => $items,
+                'items'    => $pagination,
                 'category' => null
         ));
     }
@@ -37,18 +43,22 @@ class ItemController extends Controller
      * @Route("/category/{category}", name="item_category_list")
      * @Method({"GET"});
      */
-    public function category($category)
+    public function category(Request $request, $category, ItemRepository $repository, PaginatorInterface $paginator)
     {
-
-        $items = $this->getDoctrine()->getRepository(Item::class)
-            ->findByCategory($category);
+        $q            = $request->query->get('q');
+        $queryBuilder = $repository->findByCategory($category);
+        $pagination   = $paginator->paginate(
+            $queryBuilder,
+            $request->query->getInt('page', 1),
+            12
+        );
 
         return $this->render('items/index.html.twig', array(
-                'items'    => $items,
-                'category' => $category
+                'items'    => $pagination,
+                'category' => null
         ));
     }
-    
+
     /**
      * @Route("/search", name="item_search_list")
      * @Method({"GET"});
@@ -64,7 +74,6 @@ class ItemController extends Controller
                 'category' => $query
         ));
     }
-
 
     /**
      * @Route("/items/{id}", name="item_show")
@@ -91,8 +100,9 @@ class ItemController extends Controller
         $em->flush();
 
         return $this->json($user->getItems(), 200, [], [
-            'groups' => ['autocomplete'],
-        ]);;
+                'groups' => ['autocomplete'],
+        ]);
+        ;
     }
 
     /**
@@ -106,8 +116,8 @@ class ItemController extends Controller
         $em->persist($item);
         $em->flush();
 
-       return $this->json($user->getItems(), 200, [], [
-            'groups' => ['autocomplete'],
+        return $this->json($user->getItems(), 200, [], [
+                'groups' => ['autocomplete'],
         ]);
     }
 
@@ -118,7 +128,7 @@ class ItemController extends Controller
     {
         $items = $itemRepository->findAllMatching($request->query->get('query'));
         return $this->json($items, 200, [], [
-            'groups' => ['autocomplete'],
+                'groups' => ['autocomplete'],
         ]);
     }
 }

@@ -92,7 +92,7 @@ class BuyItemController extends AbstractController
         $pdfOptions = new Options();
         $pdfOptions->set('defaultFont', 'Arial');
         $dompdf     = new Dompdf($pdfOptions);
-        $html       = $this->renderView('buy_item/facture.html.twig', [
+        $html       = $this->renderView('buy_item/invoice.html.twig', [
             'delivery' => $delivery,
             'sum'      => $sum,
         ]);

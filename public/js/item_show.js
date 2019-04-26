@@ -1,7 +1,10 @@
 $(document).ready(function () {
     $('#add-to-cart').on('click', function (e) {
-        e.preventDefault();
         
+        $("#myModal").modal();
+        
+        e.preventDefault();
+
         var link = $(e.currentTarget);
 
         $.ajax({

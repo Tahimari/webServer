@@ -1,13 +1,14 @@
 {% block body %}
-    <h3>Facture number: {{ delivery.id }}</h3>
+    <h3>Invoice number: {{ delivery.id }}</h3>
+    <h5>date: {{ delivery.createdAt|date('Y-m-d\\ H:i:s') }}</h5>
     <table class="table">
         <thead>
             <tr>
-                <th scope="col">#</th>
+                <th scope="col">Id</th>
                 <th scope="col">Title</th>
                 <th scope="col">Category</th>
                 <th scope="col">Price</th>
-                <th scope="col">Vat</th>
+                <th scope="col">Vat (23%)</th>
                 <th scope="col">Total</th>
             </tr>
         </thead>
@@ -26,7 +27,7 @@
     </table>
     <p>Price: {{ (sum*0.77)|number_format(2, '.', ',') }} PLN</p>
     <p>Vat: {{ (sum*0.23)|number_format(2, '.', ',') }} PLN</p>
-    <p>Total: {{ sum }} PLN</p>
+    <p><b>Total: {{ sum }} PLN</b></p>
     <div class="selling">
         <p><b>Selling:</b></p>
         <p>Company: WebShop</p>
