@@ -125,7 +125,7 @@ class AdministratorPanelController extends AbstractController
     public function list(Request $request, ItemRepository $repository, PaginatorInterface $paginator)
     {
         $q            = $request->query->get('q');
-        $queryBuilder = $repository->findAll();
+        $queryBuilder = $repository->findAllOrderByDate();
         $pagination   = $paginator->paginate(
             $queryBuilder,
             $request->query->getInt('page', 1),

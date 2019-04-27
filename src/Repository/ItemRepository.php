@@ -35,6 +35,15 @@ class ItemRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('u')
                 ->andWhere('u.isVisible=1')
+                ->orderBy('u.createdAt', 'DESC')
+                ->getQuery()
+                ->execute();
+    }
+
+    public function findAllOrderByDate()
+    {
+        return $this->createQueryBuilder('u')
+                ->orderBy('u.createdAt', 'DESC')
                 ->getQuery()
                 ->execute();
     }
@@ -47,11 +56,27 @@ class ItemRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('u')
                 ->andWhere('u.isVisible=1')
                 ->andWhere('u.title LIKE :query')
+                ->orderBy('u.createdAt', 'DESC')
                 ->setParameter('query', '%' . $query . '%')
                 ->setMaxResults($limit)
                 ->getQuery()
                 ->getResult();
     }
+
+    /**
+     * @return User[]
+     */
+    public function findByCategoryOrderByDate(string $category)
+    {
+        return $this->createQueryBuilder('u')
+                ->andWhere('u.isVisible=1')
+                ->andWhere('u.category LIKE :category')
+                ->orderBy('u.createdAt', 'DESC')
+                ->setParameter('category', '%' . $category . '%')
+                ->getQuery()
+                ->getResult();
+    }
+    
     // /**
     //  * @return Item[] Returns an array of Item objects
     //  */

@@ -46,7 +46,7 @@ class ItemController extends Controller
     public function category(Request $request, $category, ItemRepository $repository, PaginatorInterface $paginator)
     {
         $q            = $request->query->get('q');
-        $queryBuilder = $repository->findByCategory($category);
+        $queryBuilder = $repository->findByCategoryOrderByDate($category);
         $pagination   = $paginator->paginate(
             $queryBuilder,
             $request->query->getInt('page', 1),

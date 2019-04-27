@@ -64,8 +64,14 @@ class Item
      */
     private $isVisible;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $createdAt;
+
     public function __construct()
     {
+        $this->createdAt = new \DateTime();
         $this->users = new ArrayCollection();
         $this->deliveries = new ArrayCollection();
     }
@@ -198,6 +204,18 @@ class Item
     public function setIsVisible(bool $isVisible): self
     {
         $this->isVisible = $isVisible;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
 
         return $this;
     }
