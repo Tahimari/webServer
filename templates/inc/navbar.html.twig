@@ -42,7 +42,7 @@
                     </li>
                     <div class="dropdown mr-3">
                         <button class="btn btn-dark bg-primary dropdown-toggle cart" style="border: 0px; margin-top: 2px" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <p class="cart-paragraph d-inline">0</p><i class="fas fa-shopping-cart ml-1 d-inline"></i>
+                            <p class="cart-paragraph d-inline">{% if app.session.get('cart') is null %} 0 {% else %} {{ app.session.get('cart') }} {% endif %}</p><i class="fas fa-shopping-cart ml-1 d-inline"></i>
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <div class="item-cart-list">

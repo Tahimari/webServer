@@ -15,6 +15,7 @@ use App\Repository\ItemRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class ItemController extends Controller
 {
@@ -65,7 +66,7 @@ class ItemController extends Controller
      */
     public function search(Request $request, ItemRepository $repository, PaginatorInterface $paginator)
     {
-        $query = $request->query->get('query');
+        $query        = $request->query->get('query');
         $queryBuilder = $repository->findAllMatching($query);
         $pagination   = $paginator->paginate(
             $queryBuilder,

@@ -10,9 +10,11 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Repository\ItemRepository;
 use App\Entity\Item;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class AccountController extends AbstractController
 {
+
     /**
      * @Route("/account", name="app_account")
      */
@@ -20,7 +22,7 @@ class AccountController extends AbstractController
     {
         $user = $this->getUser();
         return $this->render('account/index.html.twig', [
-            'user' => $user
+                'user' => $user
         ]);
     }
 
@@ -30,10 +32,13 @@ class AccountController extends AbstractController
      */
     public function getCart()
     {
+        $session = new Session();
+
         $items = $this->getUser()->getItems();
+        $session->set('cart', count($items));
 
         return $this->json($items, 200, [], [
-            'groups' => ['cart'],
+                'groups' => ['cart'],
         ]);
     }
 }

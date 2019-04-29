@@ -5,12 +5,13 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Form\DeliveryFormType;
-use Dompdf\Dompdf;
-use Dompdf\Options;
+use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 use App\Repository\DeliveryRepository;
+use Knp\Snappy\Pdf;
 
 class BuyItemController extends AbstractController
 {
@@ -80,7 +81,7 @@ class BuyItemController extends AbstractController
      * @Route("buy/pdf/{id}", name="generate_pdf")
      * @IsGranted("ROLE_USER")
      */
-    public function pdf(DeliveryRepository $deliverRepository, $id)
+    public function pdf(Pdf $pdf, DeliveryRepository $deliverRepository, $id)
     {
         $delivery = $deliverRepository->find($id);
 
@@ -89,19 +90,14 @@ class BuyItemController extends AbstractController
             $sum += $item->getPrice();
         }
 
-        $pdfOptions = new Options();
-        $pdfOptions->set('defaultFont', 'Arial');
-        $dompdf     = new Dompdf($pdfOptions);
-        $html       = $this->renderView('buy_item/invoice.html.twig', [
+        $html = $this->renderView('buy_item/invoice.html.twig', [
             'delivery' => $delivery,
             'sum'      => $sum,
         ]);
 
-        $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'portrait');
-        $dompdf->render();
-        $dompdf->stream("mypdf.pdf", [
-            "Attachment" => false
-        ]);
+        return new PdfResponse(
+            $pdf->getOutputFromHtml($html),
+            'invoice.pdf'
+        );
     }
 }
