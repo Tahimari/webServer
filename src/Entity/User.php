@@ -8,12 +8,13 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Security\Core\User\EquatableInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
  */
-class User implements UserInterface
+class User implements UserInterface, EquatableInterface
 {
     /**
      * @ORM\Id()
@@ -58,9 +59,14 @@ class User implements UserInterface
      */
     private $deliveries;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $darkTheme;
+
     public function __construct()
     {
-        $this->items = new ArrayCollection();
+        $this->items      = new ArrayCollection();
         $this->deliveries = new ArrayCollection();
     }
 
@@ -96,7 +102,7 @@ class User implements UserInterface
      */
     public function getRoles(): array
     {
-        $roles = $this->roles;
+        $roles   = $this->roles;
         // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_USER';
 
@@ -106,6 +112,15 @@ class User implements UserInterface
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
+
+        return $this;
+    }
+
+    public function removeRole(string $role): self
+    {
+        if (($key = array_search($role, $this->roles)) !== false) {
+            unset($this->roles[$key]);
+        }
 
         return $this;
     }
@@ -219,6 +234,34 @@ class User implements UserInterface
                 $delivery->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isEqualTo(UserInterface $user)
+    {
+        if ($user instanceof User) {
+            // Check that the roles are the same, in any order
+            $isEqual = count($this->getRoles()) == count($user->getRoles());
+            if ($isEqual) {
+                foreach ($this->getRoles() as $role) {
+                    $isEqual = $isEqual && in_array($role, $user->getRoles());
+                }
+            }
+            return $isEqual;
+        }
+
+        return false;
+    }
+
+    public function getDarkTheme(): ?bool
+    {
+        return $this->darkTheme;
+    }
+
+    public function setDarkTheme(bool $darkTheme): self
+    {
+        $this->darkTheme = $darkTheme;
 
         return $this;
     }
