@@ -67,11 +67,15 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
     public function checkCredentials($credentials, UserInterface $user)
     {
-        $session = new Session();
-        if ($user->getDarkTheme()) {
-            $session->set('DARK_THEME', 'TRUE');
+
+        $isValid = $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
+        if ($isValid) {
+            $session = new Session();
+            if ($user->getDarkTheme()) {
+                $session->set('DARK_THEME', 'TRUE');
+            }
         }
-        return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
+        return $isValid;
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)

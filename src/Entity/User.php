@@ -8,13 +8,13 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Security\Core\User\EquatableInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
  */
-class User implements UserInterface, EquatableInterface
+class User implements UserInterface
 {
     /**
      * @ORM\Id()
@@ -25,6 +25,8 @@ class User implements UserInterface, EquatableInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Assert\NotBlank
+     * @Assert\Email
      */
     private $email;
 
@@ -35,11 +37,13 @@ class User implements UserInterface, EquatableInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
      */
     private $lastName;
 
@@ -66,6 +70,7 @@ class User implements UserInterface, EquatableInterface
 
     public function __construct()
     {
+        $this->darkTheme  = false;
         $this->items      = new ArrayCollection();
         $this->deliveries = new ArrayCollection();
     }
@@ -236,22 +241,6 @@ class User implements UserInterface, EquatableInterface
         }
 
         return $this;
-    }
-
-    public function isEqualTo(UserInterface $user)
-    {
-        if ($user instanceof User) {
-            // Check that the roles are the same, in any order
-            $isEqual = count($this->getRoles()) == count($user->getRoles());
-            if ($isEqual) {
-                foreach ($this->getRoles() as $role) {
-                    $isEqual = $isEqual && in_array($role, $user->getRoles());
-                }
-            }
-            return $isEqual;
-        }
-
-        return false;
     }
 
     public function getDarkTheme(): ?bool
