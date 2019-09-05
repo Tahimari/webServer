@@ -1,5 +1,5 @@
 # webShop
-Projekt na Projektowanie aplikacji webowej. Przedstawiający implementacje sklepu internetowego. 
+Projekt na przedmiot Projektowanie aplikacji webowej. Przedstawiający implementacje sklepu internetowego. 
 
 Wykonany z pomocą framworku Symfony 4.2.3. Przy użyciu biblioteki doctrine.
 
